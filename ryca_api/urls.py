@@ -17,7 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from core.views import ping, ExpedienteViewSet, CursoViewSet, SedeViewSet
+from core.views import ping, me, ExpedienteViewSet, CursoViewSet, SedeViewSet
+from core.auth_views import LoginView
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.views import TokenBlacklistView
 
 router = DefaultRouter()
 router.register(r"expedientes", ExpedienteViewSet, basename="expedientes")
@@ -27,5 +30,11 @@ router.register(r"sedes", SedeViewSet, basename="sedes")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/ping", ping),
+    path("api/auth/login", LoginView.as_view()),
+    path("api/auth/refresh", TokenRefreshView.as_view()),
+
+    path("api/usuarios/me", me),
     path("api/", include(router.urls)),
+
+    path("api/auth/logout", TokenBlacklistView.as_view()),
 ]
