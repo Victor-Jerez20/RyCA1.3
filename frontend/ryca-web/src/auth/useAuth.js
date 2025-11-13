@@ -1,6 +1,10 @@
-import { useContext } from 'react';
-import { AuthCtx } from './auth-context';
+import { useContext } from 'react'
+import { AuthCtx } from './auth-context'
 
 export function useAuth() {
-  return useContext(AuthCtx);
+  const ctx = useContext(AuthCtx)
+  if (!ctx) {
+    throw new Error('useAuth must be used within <AuthProvider>. Revisa main.jsx y las rutas de import.')
+  }
+  return ctx
 }
